@@ -82,13 +82,6 @@ const HeroSection = () => {
 
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 text-center pt-24 pb-12">
-        {/* Badge */}
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card border border-primary/20 mb-8 animate-slide-up">
-          <Sparkles className="w-4 h-4 text-primary" />
-          <span className="text-sm font-medium text-muted-foreground">Powered by AI • Now in Beta</span>
-          <span className="w-2 h-2 rounded-full bg-teal pulse-glow" />
-        </div>
-
         {/* Headline */}
         <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] mb-6 animate-slide-up delay-100">
           Plan Your Perfect Trip
@@ -115,34 +108,6 @@ const HeroSection = () => {
             Generate My Trip
             <ArrowRight className="w-5 h-5" />
           </Link>
-          <Link
-            to="/planner"
-            className="flex items-center gap-2 px-8 py-4 rounded-2xl glass-card border border-border hover:border-primary/40 text-foreground font-semibold text-lg transition-all duration-200 w-full sm:w-auto justify-center hover:glow-blue"
-          >
-            <Play className="w-5 h-5 text-primary" />
-            Explore Demo
-          </Link>
-        </div>
-
-        {/* Stats */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-8 mt-16 animate-slide-up delay-500">
-          {[
-            { value: "50K+", label: "Trips Generated" },
-            { value: "120+", label: "Countries Covered" },
-            { value: "4.9★", label: "User Rating" },
-          ].map((stat, i) => (
-            <div key={i} className="text-center">
-              <div className="text-3xl font-display font-bold gradient-text">{stat.value}</div>
-              <div className="text-sm text-muted-foreground mt-1">{stat.label}</div>
-            </div>
-          ))}
-        </div>
-
-        {/* Scroll hint */}
-        <div className="mt-16 animate-bounce">
-          <div className="w-6 h-10 rounded-full border-2 border-muted-foreground/30 mx-auto flex items-start justify-center p-1">
-            <div className="w-1 h-3 rounded-full bg-primary animate-pulse" />
-          </div>
         </div>
       </div>
     </section>
