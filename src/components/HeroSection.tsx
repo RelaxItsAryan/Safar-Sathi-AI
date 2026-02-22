@@ -47,7 +47,7 @@ const HeroSection = () => {
       />
 
       {/* Dark overlay for dark mode, light overlay for light */}
-      <div className="absolute inset-0 bg-background/70 dark:bg-background/80" />
+      <div className="absolute inset-0 bg-background/10 dark:bg-background/80" />
 
       {/* Animated gradient orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -86,16 +86,16 @@ const HeroSection = () => {
         <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] mb-6 animate-slide-up delay-100">
           Plan Your Perfect Trip
           <br />
-          <span className="gradient-text">in Seconds with AI</span>
+          <span style={{ color: 'black' }}>in Seconds with AI</span>
         </h1>
 
         {/* Typing effect subtitle */}
-        <div className="text-xl md:text-2xl text-muted-foreground mb-4 animate-slide-up delay-200 h-8">
+        <div className="text-xl md:text-2xl text-muted-foreground mb-4 animate-slide-up delay-200 h-8" style={{color:"black"}}>
           Generate:{" "}
           <span className="gradient-text font-semibold typing-cursor">{displayText}</span>
         </div>
 
-        <p className="text-base md:text-lg text-muted-foreground max-w-xl mx-auto mb-10 animate-slide-up delay-300">
+        <p className="text-base md:text-lg text-muted-foreground max-w-xl mx-auto mb-10 animate-slide-up delay-300" style={{color:"black", fontFamily: "Montserrat, sans-serif" }}>
           Just enter your budget, city, and duration — we handle the rest. Smart itineraries, weather, costs & maps.
         </p>
 
@@ -103,7 +103,7 @@ const HeroSection = () => {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-slide-up delay-400">
           <Link
             to="/planner"
-            className="flex items-center gap-2 px-8 py-4 rounded-2xl bg-gradient-primary text-white font-semibold text-lg shadow-glow-blue hover:opacity-90 hover:scale-105 transition-all duration-200 w-full sm:w-auto justify-center"
+            className="flex items-center gap-2 px-8 py-4 rounded-2xl bg-blue-500 text-white font-semibold text-lg shadow-glow-blue hover:opacity-90 hover:scale-105 transition-all duration-200 w-full sm:w-auto justify-center" style={{color:"black"}}
           >
             Generate My Trip
             <ArrowRight className="w-5 h-5" />
