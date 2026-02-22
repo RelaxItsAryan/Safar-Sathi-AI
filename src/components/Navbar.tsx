@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { Moon, Sun, Menu, X, Plane, User, LogOut, LayoutDashboard } from "lucide-react";
+import { Menu, X, Plane, User, LogOut, LayoutDashboard } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 
-const Navbar = ({ darkMode, toggleDark }: { darkMode: boolean; toggleDark: () => void }) => {
+const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -71,12 +71,6 @@ const Navbar = ({ darkMode, toggleDark }: { darkMode: boolean; toggleDark: () =>
 
         {/* Right actions */}
         <div className="flex items-center gap-3">
-          <button
-            onClick={toggleDark}
-            className="p-2 rounded-xl glass-card hover:glow-blue transition-all duration-200"
-          >
-            {darkMode ? <Sun className="w-4 h-4 text-foreground" /> : <Moon className="w-4 h-4 text-foreground" />}
-          </button>
 
           {user ? (
             <div className="relative hidden md:block">
