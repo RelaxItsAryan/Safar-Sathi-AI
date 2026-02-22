@@ -19,7 +19,6 @@ const Navbar = ({ darkMode, toggleDark }: { darkMode: boolean; toggleDark: () =>
   const links = [
     { label: "Features", href: "#features" },
     { label: "Planner", href: "/planner" },
-    { label: "Pricing", href: "#pricing" },
   ];
 
   const handleSignOut = async () => {
