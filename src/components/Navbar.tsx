@@ -38,8 +38,8 @@ const Navbar = () => {
       <div className="container mx-auto px-4 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
-          <img src={Logo} alt="Logo" className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center" />
-          <span className="font-display font-bold text-xl">
+          <img src={Logo} alt="Logo" className="w-12 h-12 rounded-full bg-gradient-primary flex items-center justify-center" />
+          <span className="font-display font-bold text-3xl md:text-4xl">
             <span className="gradient-text">Safar</span>
             <span className="text-foreground">Sathi</span>
             <span className="gradient-text"> AI</span>
@@ -47,7 +47,7 @@ const Navbar = () => {
         </Link>
 
         {/* Desktop nav */}
-        <div className="hidden md:flex items-center gap-8">
+                    className="h-full w-full cursor-pointer rounded-full bg-linear-to-r from-neutral-100 via-neutral-100 to-white px-4 py-2 text-black text-xl md:text-2xl font-bold shadow-[0px_2px_0px_0px_var(--color-neutral-50)_inset,0px_0.5px_1px_0px_var(--color-neutral-400)] transition-all duration-100 active:scale-98 dark:from-black dark:via-black dark:to-neutral-900 dark:text-white dark:shadow-[0px_1px_0px_0px_var(--color-neutral-950)_inset,0px_1px_0px_0px_var(--color-neutral-800)]"
           {links.map((link) => (
             link.href.startsWith("/") ? (
               <Link
@@ -117,7 +117,7 @@ const Navbar = () => {
             <>            
               <div className="hidden md:block">
                 <NoiseBackground
-                  containerClassName="w-fit p-2 rounded-full mx-auto"
+                  containerClassName="w-fit p-3 rounded-full mx-auto"
                   gradientColors={[
                     "rgb(60, 145, 173)",
                     "rgb(78, 112, 161)",
@@ -126,9 +126,9 @@ const Navbar = () => {
                 >
                   <Link
                     to="/auth"
-                    className="h-full w-full cursor-pointer rounded-full bg-linear-to-r from-neutral-100 via-neutral-100 to-white px-4 py-2 text-black shadow-[0px_2px_0px_0px_var(--color-neutral-50)_inset,0px_0.5px_1px_0px_var(--color-neutral-400)] transition-all duration-100 active:scale-98 dark:from-black dark:via-black dark:to-neutral-900 dark:text-white dark:shadow-[0px_1px_0px_0px_var(--color-neutral-950)_inset,0px_1px_0px_0px_var(--color-neutral-800)]"
+                    className="h-full w-full cursor-pointer rounded-full bg-linear-to-r from-neutral-100 via-neutral-100 t0.5o-white px-4 py-2 text-black shadow-[0px_2px_0px_0px_var(--color-neutral-50)_inset,0px_0.5px_1px_0px_var(--color-neutral-400)] transition-all duration-100 active:scale-98 dark:from-black dark:via-black dark:to-neutral-900 dark:text-white dark:shadow-[0px_1px_0px_0px_var(--color-neutral-950)_inset,0px_1px_0px_0px_var(--color-neutral-800)]"
                   >
-                   📍 Sign in / Register 
+                    📍 Sign in / Register
                   </Link>
                 </NoiseBackground>
               </div>

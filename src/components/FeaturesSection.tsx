@@ -64,9 +64,6 @@ const FeaturesSection = () => {
             <br />
             <span className="gradient-text">Travel Smarter</span>
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Six powerful AI-driven features working together to give you the most seamless travel planning experience possible.
-          </p>
         </div>
 
         {/* Feature grid */}
