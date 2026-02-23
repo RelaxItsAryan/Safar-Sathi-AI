@@ -47,7 +47,7 @@ const HeroSection = () => {
       />
 
       {/* Dark overlay for dark mode, light overlay for light */}
-      <div className="absolute inset-0 bg-background/10 dark:bg-background/80" />
+      <div className="absolute inset-0 bg-background/10 dark:bg-background/10" />
 
       {/* Animated gradient orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
