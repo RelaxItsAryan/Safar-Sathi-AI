@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import Logo from "../assets/Logo.png";
+import { NoiseBackground } from "@/components/ui/noise-background";
 import { Menu, X, Plane, User, LogOut, LayoutDashboard } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -36,9 +38,7 @@ const Navbar = () => {
       <div className="container mx-auto px-4 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-xl bg-gradient-primary flex items-center justify-center glow-blue">
-            <Plane className="w-4 h-4 text-white" />
-          </div>
+          <img src={Logo} alt="Logo" className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center" />
           <span className="font-display font-bold text-xl">
             <span className="gradient-text">Safar</span>
             <span className="text-foreground">Sathi</span>
@@ -114,19 +114,24 @@ const Navbar = () => {
               )}
             </div>
           ) : (
-            <>
-              <Link
-                to="/auth"
-                className="hidden md:block px-4 py-2 text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors"
-              >
-                Sign In
-              </Link>
-              <Link
-                to="/auth"
-                className="px-4 py-2 rounded-xl bg-gradient-primary text-white text-sm font-semibold shadow-glow-blue hover:opacity-90 transition-all duration-200"
-              >
-                Get Started
-              </Link>
+            <>            
+              <div className="hidden md:block">
+                <NoiseBackground
+                  containerClassName="w-fit p-2 rounded-full mx-auto"
+                  gradientColors={[
+                    "rgb(60, 145, 173)",
+                    "rgb(78, 112, 161)",
+                    "rgb(61, 189, 170)",
+                  ]}
+                >
+                  <Link
+                    to="/auth"
+                    className="h-full w-full cursor-pointer rounded-full bg-linear-to-r from-neutral-100 via-neutral-100 to-white px-4 py-2 text-black shadow-[0px_2px_0px_0px_var(--color-neutral-50)_inset,0px_0.5px_1px_0px_var(--color-neutral-400)] transition-all duration-100 active:scale-98 dark:from-black dark:via-black dark:to-neutral-900 dark:text-white dark:shadow-[0px_1px_0px_0px_var(--color-neutral-950)_inset,0px_1px_0px_0px_var(--color-neutral-800)]"
+                  >
+                   📍 Sign in / Register 
+                  </Link>
+                </NoiseBackground>
+              </div>
             </>
           )}
 
