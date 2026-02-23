@@ -1,4 +1,5 @@
 import { Brain, Cloud, MapPin, Wallet, Download, Clock } from "lucide-react";
+import FeaturesBg from "../assets/Features.png";
 
 const features = [
   {
@@ -48,21 +49,26 @@ const features = [
 const FeaturesSection = () => {
   return (
     <section id="features" className="py-24 relative overflow-hidden">
+      {/* Background image */}
+      <img
+        src={FeaturesBg}
+        alt="Features background"
+        className="absolute inset-0 w-full h-full object-cover object-center z-0 pointer-events-none select-none"
+        style={{ opacity: 0.18 }}
+      />
       {/* Background glow */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-primary/5 blur-3xl rounded-full dark:bg-primary/8" />
+      <div className="absolute inset-0 pointer-events-none z-10">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-primary/5 blur-[1%] rounded-full dark:bg-primary/8" />
       </div>
 
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4 relative z-20">
         {/* Header */}
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-5">
             <span className="text-xs font-semibold text-primary uppercase tracking-widest">Why SafarSathi</span>
           </div>
           <h2 className="font-display text-4xl md:text-5xl font-bold mb-5">
-            Everything You Need to
-            <br />
-            <span className="gradient-text">Travel Smarter</span>
+            Why Choose <span style={{ color: 'black' }}>SafarSathi AI?</span>
           </h2>
         </div>
 
@@ -73,12 +79,6 @@ const FeaturesSection = () => {
               key={i}
               className="group relative glass-card rounded-3xl p-6 shadow-card hover:shadow-elevated transition-all duration-300 hover:-translate-y-1 cursor-default"
             >
-              {/* Gradient border on hover */}
-              <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${feat.gradient} opacity-10`} />
-                <div className={`absolute inset-0 rounded-3xl border border-transparent bg-gradient-to-br ${feat.gradient} [mask:linear-gradient(white,white)_content-box,linear-gradient(white,white)] [-webkit-mask-composite:xor] [mask-composite:exclude]`} style={{ padding: "1px" }} />
-              </div>
-
               {/* Icon */}
               <div className={`inline-flex w-12 h-12 rounded-2xl bg-gradient-to-br ${feat.gradient} items-center justify-center mb-5 ${feat.glow} transition-all duration-300`}>
                 <feat.icon className="w-6 h-6 text-white" />
@@ -86,11 +86,6 @@ const FeaturesSection = () => {
 
               <h3 className="font-display text-lg font-bold mb-3 text-foreground">{feat.title}</h3>
               <p className="text-muted-foreground text-sm leading-relaxed">{feat.desc}</p>
-
-              {/* Arrow on hover */}
-              <div className="mt-5 flex items-center gap-1 text-primary text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                Learn more <span>→</span>
-              </div>
             </div>
           ))}
         </div>
