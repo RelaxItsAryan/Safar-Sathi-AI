@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Plane, MapPin, Globe, Compass } from "lucide-react";
+import Logo from "../assets/Logo.png";
 
 const PARTICLES = Array.from({ length: 20 }, (_, i) => ({
   id: i,
@@ -180,8 +181,8 @@ export const SplashScreen = ({ onComplete }: { onComplete: () => void }) => {
           <div className="absolute inset-0 flex items-center justify-center transition-all duration-700 delay-300">
             <div className="relative">
               <div className="absolute inset-0 bg-primary/20 rounded-full blur-xl scale-150" />
-              <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center shadow-glow-blue">
-                <Plane className="w-7 h-7 text-primary-foreground" style={{ transform: "rotate(-45deg)" }} />
+              <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center shadow-glow-blue overflow-hidden">
+                <img src={Logo} alt="Logo" className="w-18 h-18 object-contain" />
               </div>
             </div>
           </div>
@@ -229,7 +230,7 @@ export const SplashScreen = ({ onComplete }: { onComplete: () => void }) => {
                 key={i}
                 className="inline-block"
                 style={{
-                  background: "linear-gradient(135deg, hsl(217,91%,50%), hsl(270,60%,55%))",
+                  background: "linear-gradient(135deg, hsl(289, 94%, 25%), hsl(270, 88%, 30%))",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   animation: phase >= 2 ? `splashLetterPop 0.5s ease-out ${i * 0.05}s both` : "none",

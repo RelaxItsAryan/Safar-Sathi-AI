@@ -29,8 +29,8 @@ const Footer = () => {
           {/* Brand */}
           <div className="col-span-2">
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-xl bg-gradient-primary flex items-center justify-center glow-blue">
-                <Plane className="w-4 h-4 text-white" />
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center glow-blue">
+                <img src="\src\assets\Logo.png" alt="Logo" className="w-18 h-18 object-contain" />
               </div>
               <span className="font-display font-bold text-xl">
                 <span className="gradient-text">Safar</span>
