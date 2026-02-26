@@ -1,126 +1,150 @@
 # 🌍 Safar Sathi AI
-# ✈️ AI-Powered Travel Planning Web App
+### ✈️ AI-Powered Travel Planning Web App
 
-Safar Sathi AI is a modern AI-driven travel planning web application built with React (TSX) + Vite + Supabase.
-It helps users plan smarter trips by generating personalized itineraries based on budget, destination, and duration.
+Safar Sathi AI is a modern AI-driven travel planning web application built using **React (TSX) + Vite + TypeScript + Supabase**.
 
-🔗 Live Demo: https://safar-sathi-ai.vercel.app/
+It helps users generate personalized travel itineraries based on **budget, destination, and duration**, making trip planning fast, smart, and effortless.
 
-🚀 Features
+🔗 **Live Demo:** https://safar-sathi-ai.vercel.app/
 
-🧠 AI-generated travel itineraries
+---
 
-💰 Budget-based trip planning
+## 🚀 Features
 
-📍 Destination recommendations
+- 🧠 AI-powered itinerary generation
+- 💰 Budget-based trip planning
+- 📍 Smart destination recommendations
+- 🗓️ Duration-wise travel scheduling
+- 🔐 Supabase authentication & backend integration
+- ⚡ Blazing fast performance with Vite
+- 🎨 Modern UI built with Tailwind CSS
+- 📱 Fully responsive across devices
 
-🗓️ Duration-based scheduling
+---
 
-🔐 Supabase authentication & backend
+## 🛠️ Tech Stack
 
-⚡ Lightning-fast performance with Vite
+- ⚛️ React (TSX)
+- ⚡ Vite
+- 🟦 TypeScript
+- 🗄️ Supabase
+- 🎨 Tailwind CSS
+- 🧹 ESLint
 
-🎨 Clean, modern UI using Tailwind CSS
+---
 
-📱 Fully responsive design
+## 📁 Project Structure
 
-🛠️ Tech Stack
-Technology	Purpose
-⚛️ React (TSX)	Frontend framework
-⚡ Vite	Fast build tool
-🟦 TypeScript	Type safety
-🗄️ Supabase	Backend & Authentication
-🎨 Tailwind CSS	Styling
-🔐 ESLint + Prettier	Code quality
-📁 Project Structure
+```
 .
 ├── public/                # Static assets
 ├── src/                   # Main source code
 │   ├── components/        # Reusable UI components
-│   ├── pages/             # App pages
-│   ├── lib/               # Utilities & helpers
-│   └── hooks/             # Custom hooks
+│   ├── pages/             # Application pages
+│   ├── hooks/             # Custom React hooks
+│   ├── lib/               # Utility functions
+│   └── main.tsx           # App entry point
 ├── supabase/              # Supabase configuration
 ├── index.html
 ├── vite.config.ts
 ├── tailwind.config.ts
 ├── tsconfig.json
 └── package.json
-🧑‍💻 Installation & Setup
+```
 
-Clone the repository:
+---
 
+## 🧑‍💻 Installation & Setup
+
+### 1️⃣ Clone the repository
+
+```
 git clone https://github.com/your-username/safar-sathi-ai.git
 cd safar-sathi-ai
+```
 
-Install dependencies:
+### 2️⃣ Install dependencies
 
+```
 npm install
-🔑 Environment Variables
+```
 
-Create a .env file in the root directory:
+---
 
+## 🔑 Environment Variables
+
+Create a `.env` file in the root directory and add:
+
+```
 VITE_SUPABASE_URL=your_supabase_url
 VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
-VITE_OPENAI_API_KEY=your_openai_key   # if using AI API
-▶️ Run the Project
+VITE_OPENAI_API_KEY=your_openai_api_key
+```
+
+⚠️ Never commit your `.env` file to GitHub.
+
+---
+
+## ▶️ Run the Project
 
 Start development server:
 
+```
 npm run dev
+```
 
 App will run on:
 
+```
 http://localhost:5173/
+```
 
-Build for production:
+---
 
+## 🏗️ Build for Production
+
+```
 npm run build
+```
 
 Preview production build:
 
+```
 npm run preview
-🌟 Why Safar Sathi AI?
+```
 
-Planning trips manually can be overwhelming.
-Safar Sathi AI simplifies the entire process by:
+---
 
-Automating itinerary generation
+## 🌟 Why Safar Sathi AI?
 
-Optimizing costs
+Planning a trip manually can be overwhelming.
 
-Providing structured travel plans instantly
+Safar Sathi AI simplifies everything by:
+- Automating itinerary creation
+- Optimizing travel plans within budget
+- Structuring day-wise travel schedules
+- Delivering instant AI-generated results
 
-It’s built for speed, scalability, and real-world usage.
+Built for performance, scalability, and real-world usability.
 
-📌 Future Improvements
+---
 
-🗺️ Google Maps integration
+## 📌 Future Improvements
 
-🌦️ Weather API integration
+- 🗺️ Google Maps integration
+- 🌦️ Weather API integration
+- 💳 Cost breakdown visualization
+- 📊 User travel dashboard
+- 🤖 Advanced AI personalization
 
-💳 Cost breakdown visualization
+---
 
-📊 Travel history dashboard
-
-🤖 Advanced AI personalization
-
-🤝 Contributing
-
-Contributions are welcome!
-
-Fork the repo
-
-Create your feature branch
-
-Commit your changes
-
-Push and create a PR
-
-📜 License
+## 📜 License
 
 This project is licensed under the MIT License.
 
-👨‍💻 Author
+---
 
-Built with ❤️ by Aryan
+## 👨‍💻 Author
+
+Built with ❤️ by **Aryan**
