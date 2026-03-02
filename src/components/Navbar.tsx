@@ -19,8 +19,10 @@ const Navbar = () => {
   }, []);
 
   const links = [
-    { label: "Destinations", href: "#popular-destinations" },
+    { label: "Destinations", href: "/#destinations" },
+    { label: "Directions", href: "/#destinations" },
     { label: "Planner", href: "/planner" },
+    { label: "Contact", href: "/#contact" },
   ];
 
   const handleSignOut = async () => {

@@ -5,9 +5,8 @@ const Footer = () => {
   const year = new Date().getFullYear();
 
   const links = {
-    
-    Support: ["Help Center", "Privacy Policy", "Terms of Service", "Contact"]
-
+    Support: ["Help Center", "Privacy Policy", "Terms of Service"],
+    Contact: ["hello@safarsathi.ai", "+1 (555) 123-4567", "123 Travel Lane, Wander City"],
   };
 
   const socials = [
@@ -24,8 +23,8 @@ const Footer = () => {
         <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-primary/5 blur-3xl rounded-full dark:bg-primary/6" />
       </div>
 
-      <div className="container mx-auto px-4 py-16 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-8 mb-12">
+      <div id="contact" className="container mx-auto px-4 py-16 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-8 mb-12">
           {/* Brand */}
           <div className="col-span-1 md:col-span-1 lg:col-span-2">
             <div className="flex items-center gap-2 mb-4">
@@ -72,6 +71,11 @@ const Footer = () => {
               </ul>
             </div>
           ))}
+
+          {/* World Map Section */}
+          <div className="col-span-1 md:col-span-1 lg:col-span-2 flex items-center justify-center lg:justify-end">
+            <WorldMap />
+          </div>
         </div>
 
         {/* Bottom bar */}
