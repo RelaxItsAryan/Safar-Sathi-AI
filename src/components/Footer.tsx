@@ -1,4 +1,4 @@
-import { Plane, Twitter, Instagram, Linkedin, Github, Mail } from "lucide-react";
+import { Plane, Instagram, Linkedin, Github, Mail } from "lucide-react";
 import WorldMap from "./WorldMap";
 
 const Footer = () => {
@@ -10,11 +10,11 @@ const Footer = () => {
   };
 
   const socials = [
-    { Icon: Twitter, href: "#" },
-    { Icon: Instagram, href: "#" },
-    { Icon: Linkedin, href: "#" },
-    { Icon: Github, href: "#" },
-    { Icon: Mail, href: "#" },
+    // { Icon: Twitter, href: "#" },
+    { Icon: Instagram, href: "https://www.instagram.com/simply_dilisha/" },
+    { Icon: Linkedin, href: "https://www.linkedin.com/in/dilisha-arya" },
+    { Icon: Github, href: "https://github.com/RelaxItsAryan" },
+    { Icon: Mail, href: "mailto:aryanarya5507@gmail.com" },
   ];
 
   return (

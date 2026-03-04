@@ -48,7 +48,7 @@ const Planner = () => {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
-  const tabs = ["overview", "Planned Route", "weather", "budget", "places"];
+  const tabs = ["overview", "itinerary", "weather", "budget", "places"];
 
   const handleGenerate = async () => {
     if (!city.trim()) return;
