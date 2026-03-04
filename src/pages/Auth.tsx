@@ -58,7 +58,6 @@ const Auth = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 justify-center mb-8">
             <div className="w-9 h-9 rounded-xl bg-gradient-primary flex items-center justify-center glow-blue">
-              <Plane className="w-5 h-5 text-white" />
             </div>
             <span className="font-display font-bold text-xl">
               <span className="gradient-text">Safar</span>

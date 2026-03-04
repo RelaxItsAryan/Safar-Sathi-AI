@@ -48,7 +48,7 @@ const Planner = () => {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
-  const tabs = ["overview", "itinerary", "weather", "budget", "places"];
+  const tabs = ["overview", "Planned Route", "weather", "budget", "places"];
 
   const handleGenerate = async () => {
     if (!city.trim()) return;
@@ -144,16 +144,13 @@ const Planner = () => {
         <div className="container mx-auto px-4 relative z-10">
           {/* Header */}
           <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-secondary/10 border border-secondary/20 mb-5">
-              <span className="text-xs font-semibold text-secondary uppercase tracking-widest">AI Trip Planner</span>
-            </div>
             <h1 className="font-display text-4xl md:text-5xl font-bold mb-4">
               Plan Your Dream Trip
               <br />
               <span className="gradient-text">Instantly with AI</span>
             </h1>
             <p className="text-muted-foreground text-lg max-w-xl mx-auto">
-              Fill in the details below and let our AI build your personalized itinerary in seconds.
+              Fill in the details below and let our AI build your personalized planned route in seconds.
             </p>
           </div>
 
