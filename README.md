@@ -147,4 +147,4 @@ This project is licensed under the MIT License.
 
 ## 👨‍💻 Author
 
-Built with ❤️ by **Aryan**
+Built with ❤️ by **Dilisha and Aryan**

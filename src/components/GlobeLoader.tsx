@@ -8,7 +8,7 @@ const STEPS = [
   { label: "Fetching weather forecast...", pct: 62 },
   { label: "Calculating smart budget...", pct: 78 },
   { label: "Finding top places to visit...", pct: 90 },
-  { label: "Finalizing your dream trip ✨", pct: 98 },
+  { label: "Finalizing your dream trip...", pct: 98 },
 ];
 
 interface GlobeLoaderProps {
