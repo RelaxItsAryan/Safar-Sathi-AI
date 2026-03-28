@@ -1,150 +1,211 @@
-# 🌍 Safar Sathi AI
-### ✈️ AI-Powered Travel Planning Web App
+# Safar Sathi AI
 
-Safar Sathi AI is a modern AI-driven travel planning web application built using **React (TSX) + Vite + TypeScript + Supabase**.
+**AI-Powered Travel Itinerary Generator**
 
-It helps users generate personalized travel itineraries based on **budget, destination, and duration**, making trip planning fast, smart, and effortless.
+Safar Sathi AI is a modern travel planning web application that uses **Google Gemini AI** to generate personalized travel itineraries with real-time images, weather forecasts, and budget breakdowns.
 
-🔗 **Live Demo:** https://safar-sathi-ai.vercel.app/
-
----
-
-## 🚀 Features
-
-- 🧠 AI-powered itinerary generation
-- 💰 Budget-based trip planning
-- 📍 Smart destination recommendations
-- 🗓️ Duration-wise travel scheduling
-- 🔐 Supabase authentication & backend integration
-- ⚡ Blazing fast performance with Vite
-- 🎨 Modern UI built with Tailwind CSS
-- 📱 Fully responsive across devices
+**Live Demo:** [safar-sathi-ai.vercel.app](https://safar-sathi-ai.vercel.app/)
 
 ---
 
-## 🛠️ Tech Stack
+## Features
 
-- ⚛️ React (TSX)
-- ⚡ Vite
-- 🟦 TypeScript
-- 🗄️ Supabase
-- 🎨 Tailwind CSS
-- 🧹 ESLint
+| Feature | Description |
+|---------|-------------|
+| **AI Itinerary Generation** | Powered by Google Gemini 2.5 Flash for intelligent trip planning |
+| **Real-Time Images** | Dynamic images from Pexels API for places and activities |
+| **Weather Forecasts** | 5-day weather predictions for your destination |
+| **Budget Breakdown** | Visual cost analysis across accommodation, food, transport, activities |
+| **Day-by-Day Plans** | Detailed daily activities with estimated costs |
+| **Top Places** | Curated recommendations with ratings and categories |
+| **Local Tips** | Insider tips for each destination |
+| **Save Trips** | Save generated itineraries to your dashboard |
+| **Authentication** | Secure sign-in with Supabase Auth |
+| **Responsive Design** | Works seamlessly on desktop and mobile |
 
 ---
 
-## 📁 Project Structure
+## Tech Stack
+
+**Frontend:**
+- React 18 + TypeScript
+- Vite (Build tool)
+- Tailwind CSS + shadcn/ui
+- Lucide Icons
+
+**Backend:**
+- Supabase (Database + Auth + Edge Functions)
+- Google Gemini 2.5 Flash (AI)
+- Pexels API (Images)
+
+**Deployment:**
+- Vercel (Frontend)
+- Supabase Edge Functions (Serverless)
+
+---
+
+## Project Structure
 
 ```
-.
-├── public/                # Static assets
-├── src/                   # Main source code
+safar-sathi-ai/
+├── src/
 │   ├── components/        # Reusable UI components
-│   ├── pages/             # Application pages
+│   ├── contexts/          # React context providers
 │   ├── hooks/             # Custom React hooks
-│   ├── lib/               # Utility functions
+│   ├── integrations/      # Supabase client setup
+│   ├── pages/             # Application pages
+│   │   ├── Index.tsx      # Landing page
+│   │   ├── Planner.tsx    # AI trip planner
+│   │   ├── Dashboard.tsx  # User dashboard
+│   │   └── Auth.tsx       # Authentication
 │   └── main.tsx           # App entry point
-├── supabase/              # Supabase configuration
-├── index.html
-├── vite.config.ts
-├── tailwind.config.ts
-├── tsconfig.json
+├── supabase/
+│   ├── functions/
+│   │   └── generate-itinerary/  # AI Edge Function
+│   └── config.toml        # Supabase configuration
+├── public/                # Static assets
 └── package.json
 ```
 
 ---
 
-## 🧑‍💻 Installation & Setup
+## Getting Started
 
-### 1️⃣ Clone the repository
+### Prerequisites
 
-```
-git clone https://github.com/your-username/safar-sathi-ai.git
-cd safar-sathi-ai
-```
+- Node.js 18+
+- npm or yarn
+- Supabase account
+- Google AI Studio API key
+- Pexels API key
 
-### 2️⃣ Install dependencies
+### Installation
 
-```
-npm install
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/RelaxItsAryan/Safar-Sathi-AI.git
+   cd Safar-Sathi-AI
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Set up environment variables**
+
+   Create a `.env` file:
+   ```env
+   VITE_SUPABASE_URL=your_supabase_url
+   VITE_SUPABASE_PUBLISHABLE_KEY=your_supabase_anon_key
+   ```
+
+4. **Set up Supabase Edge Function secrets**
+   ```bash
+   npx supabase login
+   npx supabase link --project-ref your-project-ref
+   npx supabase secrets set GEMINI_API_KEY=your_gemini_api_key
+   npx supabase secrets set PEXELS_API_KEY=your_pexels_api_key
+   ```
+
+5. **Deploy Edge Functions**
+   ```bash
+   npx supabase functions deploy generate-itinerary
+   ```
+
+6. **Run the development server**
+   ```bash
+   npm run dev
+   ```
+
+   Open [http://localhost:5173](http://localhost:5173)
+
+---
+
+## Environment Variables
+
+### Frontend (.env)
+
+| Variable | Description |
+|----------|-------------|
+| `VITE_SUPABASE_URL` | Your Supabase project URL |
+| `VITE_SUPABASE_PUBLISHABLE_KEY` | Supabase anon/public key |
+
+### Supabase Edge Functions (Secrets)
+
+| Secret | Description |
+|--------|-------------|
+| `GEMINI_API_KEY` | Google AI Studio API key |
+| `PEXELS_API_KEY` | Pexels API key for images |
+
+---
+
+## API Keys Setup
+
+### Google Gemini API
+1. Go to [Google AI Studio](https://aistudio.google.com/)
+2. Create a new API key
+3. Add it as `GEMINI_API_KEY` in Supabase secrets
+
+### Pexels API
+1. Go to [Pexels API](https://www.pexels.com/api/)
+2. Create a free account and get API key
+3. Add it as `PEXELS_API_KEY` in Supabase secrets
+
+---
+
+## Deployment
+
+### Vercel (Frontend)
+
+1. Connect your GitHub repo to Vercel
+2. Add environment variables:
+   - `VITE_SUPABASE_URL`
+   - `VITE_SUPABASE_PUBLISHABLE_KEY`
+3. Deploy
+
+### Supabase (Backend)
+
+Edge Functions are automatically deployed when you run:
+```bash
+npx supabase functions deploy generate-itinerary
 ```
 
 ---
 
-## 🔑 Environment Variables
+## How It Works
 
-Create a `.env` file in the root directory and add:
-
-```
-VITE_SUPABASE_URL=your_supabase_url
-VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
-VITE_OPENAI_API_KEY=your_openai_api_key
-```
-
-⚠️ Never commit your `.env` file to GitHub.
+1. **User Input** - Enter destination, duration, and budget
+2. **AI Generation** - Gemini AI creates a detailed itinerary
+3. **Image Fetching** - Pexels API provides relevant images
+4. **Display** - Results shown in organized tabs (Overview, Itinerary, Weather, Budget, Places)
+5. **Save** - Optionally save to dashboard for later access
 
 ---
 
-## ▶️ Run the Project
+## Scripts
 
-Start development server:
-
-```
-npm run dev
-```
-
-App will run on:
-
-```
-http://localhost:5173/
-```
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start development server |
+| `npm run build` | Build for production |
+| `npm run preview` | Preview production build |
+| `npm run lint` | Run ESLint |
 
 ---
 
-## 🏗️ Build for Production
+## Contributing
 
-```
-npm run build
-```
-
-Preview production build:
-
-```
-npm run preview
-```
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 ---
 
-## 🌟 Why Safar Sathi AI?
-
-Planning a trip manually can be overwhelming.
-
-Safar Sathi AI simplifies everything by:
-- Automating itinerary creation
-- Optimizing travel plans within budget
-- Structuring day-wise travel schedules
-- Delivering instant AI-generated results
-
-Built for performance, scalability, and real-world usability.
-
----
-
-## 📌 Future Improvements
-
-- 🗺️ Google Maps integration
-- 🌦️ Weather API integration
-- 💳 Cost breakdown visualization
-- 📊 User travel dashboard
-- 🤖 Advanced AI personalization
-
----
-
-## 📜 License
+## License
 
 This project is licensed under the MIT License.
 
 ---
 
-## 👨‍💻 Author
+## Authors
 
-Built with ❤️ by **Dilisha and Aryan**
+Built by **Dilisha and Aryan**
