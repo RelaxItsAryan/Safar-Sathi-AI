@@ -306,23 +306,34 @@ const Planner = () => {
               {activeTab === "itinerary" && (
                 <div className="space-y-4">
                   {result.dayPlans?.map((plan: any) => (
-                    <div key={plan.day} className="glass-card rounded-2xl p-5 shadow-card hover:shadow-elevated transition-all duration-200">
-                      <div className="flex items-start gap-4">
-                        <div className="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center shrink-0 text-white font-bold text-sm">
-                          {plan.day}
+                    <div key={plan.day} className="glass-card rounded-2xl overflow-hidden shadow-card hover:shadow-elevated transition-all duration-200">
+                      {plan.image && (
+                        <div className="h-48 w-full overflow-hidden">
+                          <img
+                            src={plan.image}
+                            alt={plan.title}
+                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                          />
                         </div>
-                        <div className="flex-1">
-                          <div className="flex items-center justify-between mb-3">
-                            <h4 className="font-display font-bold text-foreground">{plan.title}</h4>
-                            {plan.cost && <span className="text-sm font-semibold text-primary">{result.currency} {plan.cost}</span>}
+                      )}
+                      <div className="p-5">
+                        <div className="flex items-start gap-4">
+                          <div className="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center shrink-0 text-white font-bold text-sm">
+                            {plan.day}
                           </div>
-                          <div className="space-y-2">
-                            {plan.activities?.map((act: string, i: number) => (
-                              <div key={i} className="flex items-center gap-2 text-sm text-muted-foreground">
-                                <div className="w-1.5 h-1.5 rounded-full bg-teal shrink-0" />
-                                {act}
-                              </div>
-                            ))}
+                          <div className="flex-1">
+                            <div className="flex items-center justify-between mb-3">
+                              <h4 className="font-display font-bold text-foreground">{plan.title}</h4>
+                              {plan.cost && <span className="text-sm font-semibold text-primary">{result.currency} {plan.cost}</span>}
+                            </div>
+                            <div className="space-y-2">
+                              {plan.activities?.map((act: string, i: number) => (
+                                <div key={i} className="flex items-center gap-2 text-sm text-muted-foreground">
+                                  <div className="w-1.5 h-1.5 rounded-full bg-teal shrink-0" />
+                                  {act}
+                                </div>
+                              ))}
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -400,18 +411,29 @@ const Planner = () => {
                   <h3 className="font-display text-xl font-bold mb-6 text-foreground">Top Places to Visit</h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {result.places?.map((place: any, i: number) => (
-                      <div key={i} className="glass-card rounded-2xl p-5 hover:border-primary/30 transition-colors hover:shadow-elevated group">
-                        <div className="flex items-start justify-between mb-3">
-                          <div className="w-10 h-10 rounded-xl bg-gradient-teal flex items-center justify-center">
-                            <MapPin className="w-5 h-5 text-white" />
+                      <div key={i} className="glass-card rounded-2xl overflow-hidden hover:border-primary/30 transition-colors hover:shadow-elevated group">
+                        {place.image && (
+                          <div className="h-40 w-full overflow-hidden">
+                            <img
+                              src={place.image}
+                              alt={place.name}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            />
                           </div>
-                          <div className="flex items-center gap-1 text-yellow-400">
-                            <Star className="w-4 h-4 fill-current" />
-                            <span className="text-sm font-semibold">{place.rating}</span>
+                        )}
+                        <div className="p-5">
+                          <div className="flex items-start justify-between mb-3">
+                            <div className="w-10 h-10 rounded-xl bg-gradient-teal flex items-center justify-center">
+                              <MapPin className="w-5 h-5 text-white" />
+                            </div>
+                            <div className="flex items-center gap-1 text-yellow-400">
+                              <Star className="w-4 h-4 fill-current" />
+                              <span className="text-sm font-semibold">{place.rating}</span>
+                            </div>
                           </div>
+                          <h4 className="font-display font-bold text-foreground mb-1">{place.name}</h4>
+                          <span className="text-xs px-2 py-1 rounded-full bg-primary/10 text-primary font-medium">{place.type}</span>
                         </div>
-                        <h4 className="font-display font-bold text-foreground mb-1">{place.name}</h4>
-                        <span className="text-xs px-2 py-1 rounded-full bg-primary/10 text-primary font-medium">{place.type}</span>
                       </div>
                     ))}
                   </div>
