@@ -6,8 +6,8 @@ import {
   Sun, Cloud, CloudRain, Thermometer, ArrowLeft, Bookmark
 } from "lucide-react";
 import Logo from "../assets/Logo.png";
-import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
+import { getTripById, FirestoreSavedTrip } from "@/integrations/firebase/db";
 import { PageTransition } from "@/components/PageTransition";
 import { useToast } from "@/hooks/use-toast";
 
@@ -35,33 +35,48 @@ const WEATHER_ICONS: Record<string, any> = {
 
 const TripDetail = () => {
   const { id } = useParams();
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [trip, setTrip] = useState<any>(null);
+  const [trip, setTrip] = useState<FirestoreSavedTrip | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("overview");
 
   useEffect(() => {
-    if (!user) { navigate("/auth"); return; }
-    fetchTrip();
-  }, [id, user]);
-
-  const fetchTrip = async () => {
-    const { data, error } = await supabase
-      .from("saved_trips")
-      .select("*")
-      .eq("id", id)
-      .eq("user_id", user!.id)
-      .single();
-
-    if (error || !data) {
-      toast({ title: "Trip not found", variant: "destructive" });
-      navigate("/dashboard");
+    if (!authLoading && !user) {
+      navigate("/auth");
       return;
     }
-    setTrip(data);
-    setLoading(false);
+    if (user && id) {
+      fetchTrip();
+    }
+  }, [id, user, authLoading]);
+
+  const fetchTrip = async () => {
+    if (!id) return;
+    try {
+      const data = await getTripById(id);
+
+      if (!data) {
+        toast({ title: "Trip not found", variant: "destructive" });
+        navigate("/dashboard");
+        return;
+      }
+
+      // Security check: only the owner can view their saved trip
+      if (user && data.user_id && data.user_id !== user.uid) {
+        toast({ title: "Unauthorized access", variant: "destructive" });
+        navigate("/dashboard");
+        return;
+      }
+
+      setTrip(data);
+    } catch (err: any) {
+      toast({ title: "Error fetching trip", description: err.message, variant: "destructive" });
+      navigate("/dashboard");
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (loading) {
@@ -71,6 +86,8 @@ const TripDetail = () => {
       </div>
     );
   }
+
+  if (!trip) return null;
 
   const itinerary = trip.itinerary as any[] || [];
   const weather = trip.weather as any[] || [];
@@ -120,7 +137,7 @@ const TripDetail = () => {
                   </div>
                   <div className="flex items-center gap-1.5">
                     <Bookmark className="w-4 h-4 text-teal" />
-                    Saved trip
+                    Saved in Firestore
                   </div>
                 </div>
               </div>

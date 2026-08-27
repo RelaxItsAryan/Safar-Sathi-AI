@@ -6,8 +6,9 @@ import {
   Sun, Cloud, CloudRain, Thermometer, Star,
   Coffee, Utensils, Camera, Hotel, Car, ChevronRight, Bookmark
 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
+import { saveTripToFirestore } from "@/integrations/firebase/db";
+import { generateItinerary, GeneratedItinerary } from "@/services/aiTripService";
 import { GlobeLoader } from "@/components/GlobeLoader";
 import { useToast } from "@/hooks/use-toast";
 import { Link } from "react-router-dom";
@@ -45,7 +46,7 @@ const Planner = () => {
   const [budget, setBudget] = useState(2000);
   const [currency, setCurrency] = useState("USD");
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<(GeneratedItinerary & { destination: string; days: number; budget: number; currency: string }) | null>(null);
   const [activeTab, setActiveTab] = useState("overview");
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -70,14 +71,14 @@ const Planner = () => {
     setSaved(false);
 
     try {
-      const { data, error } = await supabase.functions.invoke("generate-itinerary", {
-        body: { destination: city, days, budget, currency },
+      const itinerary = await generateItinerary({
+        destination: city,
+        days,
+        budget,
+        currency,
       });
 
-      if (error) throw error;
-      if (data?.error) throw new Error(data.error);
-
-      setResult({ destination: city, days, budget, currency, ...data.itinerary });
+      setResult({ destination: city, days, budget, currency, ...itinerary });
       setActiveTab("overview");
     } catch (err: any) {
       toast({
@@ -95,26 +96,30 @@ const Planner = () => {
       toast({ title: "Please sign in to save trips", variant: "destructive" });
       return;
     }
+    if (!result) return;
+
     setSaving(true);
-    const { error } = await supabase.from("saved_trips").insert({
-      user_id: user.id,
-      destination: result.destination,
-      days: result.days,
-      budget: result.budget,
-      currency: result.currency,
-      overview: result.overview,
-      itinerary: result.dayPlans,
-      weather: result.weather,
-      cost_breakdown: result.costBreakdown,
-      places: result.places,
-    });
-    if (error) {
-      toast({ title: "Error saving trip", description: error.message, variant: "destructive" });
-    } else {
+    try {
+      await saveTripToFirestore({
+        user_id: user.uid,
+        destination: result.destination,
+        days: result.days,
+        budget: result.budget,
+        currency: result.currency,
+        overview: result.overview,
+        itinerary: result.dayPlans,
+        weather: result.weather,
+        cost_breakdown: result.costBreakdown,
+        places: result.places,
+      });
+
       setSaved(true);
       toast({ title: "Trip saved! ✈️", description: "Find it in your dashboard." });
+    } catch (error: any) {
+      toast({ title: "Error saving trip", description: error.message, variant: "destructive" });
+    } finally {
+      setSaving(false);
     }
-    setSaving(false);
   };
 
   return (
@@ -452,7 +457,7 @@ const Planner = () => {
                   }`}
                 >
                   <Bookmark className={`w-4 h-4 ${saved ? "fill-current" : ""}`} />
-                  {saving ? "Saving..." : saved ? "Saved to Dashboard ✓" : "Save to Dashboard"}
+                  {saving ? "Saving to Firestore..." : saved ? "Saved to Dashboard ✓" : "Save to Dashboard"}
                 </button>
               </div>
             </div>

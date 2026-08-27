@@ -2,26 +2,22 @@ import { useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Plane, Plus, MapPin, Calendar, DollarSign,
-  Trash2, LogOut, User, Globe, BarChart3, Clock, Star,
+  Trash2, LogOut, User as UserIcon, Globe, BarChart3, Clock, Star,
   X, Camera, Mail, MapPinned, Heart, Briefcase, Mountain,
   Palmtree, Building, Tent, Ship, Utensils, Music, Save,
   Check, Edit3, Shield, Bell, Loader2
 } from "lucide-react";
 import Logo from "../assets/Logo.png";
-import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
+import {
+  getProfile,
+  updateProfileData,
+  getTripsForUser,
+  deleteTripFromFirestore,
+  FirestoreSavedTrip
+} from "@/integrations/firebase/db";
 import { PageTransition } from "@/components/PageTransition";
 import { useToast } from "@/hooks/use-toast";
-
-interface SavedTrip {
-  id: string;
-  destination: string;
-  days: number;
-  budget: number;
-  currency: string;
-  overview: string | null;
-  created_at: string;
-}
 
 interface ProfileData {
   display_name: string;
@@ -50,10 +46,10 @@ const AVATAR_COLORS = [
 ];
 
 const Dashboard = () => {
-  const { user, signOut } = useAuth();
+  const { user, loading: authLoading, signOut } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [trips, setTrips] = useState<SavedTrip[]>([]);
+  const [trips, setTrips] = useState<FirestoreSavedTrip[]>([]);
   const [loading, setLoading] = useState(true);
   const [profileName, setProfileName] = useState("");
   
@@ -75,56 +71,66 @@ const Dashboard = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (!user) { navigate("/auth"); return; }
-    fetchData();
-  }, [user]);
+    if (!authLoading && !user) {
+      navigate("/auth");
+      return;
+    }
+    if (user) {
+      fetchData();
+    }
+  }, [user, authLoading]);
 
   const fetchData = async () => {
+    if (!user) return;
     setLoading(true);
-    const [{ data: profile }, { data: tripsData }] = await Promise.all([
-      supabase.from("profiles").select("display_name, avatar_url, travel_preferences").eq("user_id", user!.id).single(),
-      supabase.from("saved_trips").select("*").eq("user_id", user!.id).order("created_at", { ascending: false }),
-    ]);
-    if (profile) {
-      const prefs = profile.travel_preferences ? 
-        (typeof profile.travel_preferences === 'string' ? JSON.parse(profile.travel_preferences) : profile.travel_preferences) : [];
-      setProfileName(profile.display_name || user!.email || "");
+    try {
+      const [profile, tripsData] = await Promise.all([
+        getProfile(user.uid),
+        getTripsForUser(user.uid),
+      ]);
+
+      const initialName = profile?.display_name || user.displayName || user.email?.split("@")[0] || "Traveler";
+      const initialAvatar = profile?.avatar_url || user.photoURL || null;
+      const initialPrefs = profile?.travel_preferences || [];
+
+      setProfileName(initialName);
       setProfileData({
-        display_name: profile.display_name || "",
-        avatar_url: profile.avatar_url,
-        travel_preferences: Array.isArray(prefs) ? prefs : [],
+        display_name: initialName,
+        avatar_url: initialAvatar,
+        travel_preferences: Array.isArray(initialPrefs) ? initialPrefs : [],
       });
       setTempProfile({
-        display_name: profile.display_name || "",
-        avatar_url: profile.avatar_url,
-        travel_preferences: Array.isArray(prefs) ? prefs : [],
+        display_name: initialName,
+        avatar_url: initialAvatar,
+        travel_preferences: Array.isArray(initialPrefs) ? initialPrefs : [],
       });
+
+      if (tripsData) setTrips(tripsData);
+    } catch (err: any) {
+      console.error("Failed to load dashboard data:", err);
+    } finally {
+      setLoading(false);
     }
-    if (tripsData) setTrips(tripsData);
-    setLoading(false);
   };
 
   const handleSaveProfile = async () => {
+    if (!user) return;
     setSavingProfile(true);
-    const { error } = await supabase
-      .from("profiles")
-      .update({
+    try {
+      await updateProfileData(user.uid, {
         display_name: tempProfile.display_name,
         avatar_url: tempProfile.avatar_url,
-        travel_preferences: JSON.stringify(tempProfile.travel_preferences),
-        updated_at: new Date().toISOString(),
-      })
-      .eq("user_id", user!.id);
-    
-    if (error) {
-      toast({ title: "Error updating profile", description: error.message, variant: "destructive" });
-    } else {
+        travel_preferences: tempProfile.travel_preferences,
+      });
       setProfileData(tempProfile);
-      setProfileName(tempProfile.display_name || user!.email || "");
+      setProfileName(tempProfile.display_name || user.displayName || "Traveler");
       setEditMode(false);
-      toast({ title: "Profile updated! ✨", description: "Your changes have been saved." });
+      toast({ title: "Profile updated! ✨", description: "Your changes have been saved to Firestore." });
+    } catch (error: any) {
+      toast({ title: "Error updating profile", description: error.message, variant: "destructive" });
+    } finally {
+      setSavingProfile(false);
     }
-    setSavingProfile(false);
   };
 
   const handleCancelEdit = () => {
@@ -145,7 +151,6 @@ const Dashboard = () => {
     const file = e.target.files?.[0];
     if (!file) return;
     
-    // For now, create a data URL (in production, you'd upload to Supabase Storage)
     const reader = new FileReader();
     reader.onloadend = () => {
       setTempProfile(prev => ({ ...prev, avatar_url: reader.result as string }));
@@ -158,8 +163,13 @@ const Dashboard = () => {
   };
 
   const deleteTrip = async (id: string) => {
-    await supabase.from("saved_trips").delete().eq("id", id);
-    setTrips((prev) => prev.filter((t) => t.id !== id));
+    try {
+      await deleteTripFromFirestore(id);
+      setTrips((prev) => prev.filter((t) => t.id !== id));
+      toast({ title: "Trip deleted", description: "The trip was removed from your saved list." });
+    } catch (err: any) {
+      toast({ title: "Failed to delete trip", description: err.message, variant: "destructive" });
+    }
   };
 
   const handleSignOut = async () => {
@@ -167,7 +177,7 @@ const Dashboard = () => {
     navigate("/");
   };
 
-  const totalBudget = trips.reduce((acc, t) => acc + Number(t.budget), 0);
+  const totalBudget = trips.reduce((acc, t) => acc + Number(t.budget || 0), 0);
   const destinations = [...new Set(trips.map((t) => t.destination.split(",")[1]?.trim() || t.destination))];
 
   return (
@@ -192,7 +202,7 @@ const Dashboard = () => {
                 { icon: BarChart3, label: "Dashboard", active: true },
                 { icon: Globe, label: "Explore", to: "/" },
                 { icon: MapPin, label: "My Trips", active: false },
-                { icon: User, label: "Profile", active: false, onClick: () => setShowProfile(true) },
+                { icon: UserIcon, label: "Profile", active: false, onClick: () => setShowProfile(true) },
               ].map((item, i) => (
                 <button
                   key={i}
@@ -319,12 +329,14 @@ const Dashboard = () => {
                       <div className="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center shrink-0">
                         <MapPin className="w-5 h-5 text-white" />
                       </div>
-                      <button
-                        onClick={() => deleteTrip(trip.id)}
-                        className="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all duration-200"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
+                      {trip.id && (
+                        <button
+                          onClick={() => deleteTrip(trip.id!)}
+                          className="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all duration-200"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      )}
                     </div>
 
                     <h3 className="font-display font-bold text-foreground mb-1 truncate">{trip.destination}</h3>
@@ -344,7 +356,7 @@ const Dashboard = () => {
                     <div className="mt-3 pt-3 border-t border-border flex items-center justify-between">
                       <div className="flex items-center gap-1 text-xs text-muted-foreground">
                         <Clock className="w-3 h-3" />
-                        {new Date(trip.created_at).toLocaleDateString()}
+                        {trip.created_at ? new Date(trip.created_at).toLocaleDateString() : "Saved"}
                       </div>
                       <Link
                         to={`/trip/${trip.id}`}
@@ -376,7 +388,7 @@ const Dashboard = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <h2 className="font-display text-2xl font-bold text-foreground">My Profile</h2>
-                    <p className="text-sm text-muted-foreground">Manage your account and preferences</p>
+                    <p className="text-sm text-muted-foreground">Manage your Firebase account and preferences</p>
                   </div>
                   <button
                     onClick={() => { setShowProfile(false); handleCancelEdit(); }}
@@ -431,7 +443,7 @@ const Dashboard = () => {
                     </p>
                     <p className="text-muted-foreground text-xs flex items-center justify-center sm:justify-start gap-1.5 mt-1">
                       <Clock className="w-3 h-3" />
-                      Member since {new Date(user?.created_at || Date.now()).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                      Member since {user?.metadata?.creationTime ? new Date(user.metadata.creationTime).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }) : "Recent"}
                     </p>
                     
                     {/* Avatar color selector in edit mode */}
@@ -465,7 +477,7 @@ const Dashboard = () => {
                 {/* Personal Information */}
                 <div className="glass-card rounded-2xl p-5">
                   <h4 className="font-display font-bold text-foreground mb-4 flex items-center gap-2">
-                    <User className="w-4 h-4 text-primary" />
+                    <UserIcon className="w-4 h-4 text-primary" />
                     Personal Information
                   </h4>
                   <div className="space-y-4">
@@ -538,7 +550,7 @@ const Dashboard = () => {
                     {[
                       { icon: Plane, label: "Trips Planned", value: trips.length, color: "from-primary to-secondary" },
                       { icon: Globe, label: "Destinations", value: [...new Set(trips.map(t => t.destination))].length, color: "from-teal to-primary" },
-                      { icon: Calendar, label: "Total Days", value: trips.reduce((a, t) => a + t.days, 0), color: "from-secondary to-teal" },
+                      { icon: Calendar, label: "Total Days", value: trips.reduce((a, t) => a + (t.days || 0), 0), color: "from-secondary to-teal" },
                       { icon: Star, label: "Places Saved", value: trips.length * 4, color: "from-primary to-teal" },
                     ].map((stat, i) => (
                       <div key={i} className="text-center p-3 rounded-xl bg-muted/30">
@@ -561,7 +573,7 @@ const Dashboard = () => {
                   <div className="space-y-2">
                     {[
                       { icon: Bell, label: "Notification Preferences", desc: "Manage email and push notifications" },
-                      { icon: Shield, label: "Privacy & Security", desc: "Password, 2FA, and privacy settings" },
+                      { icon: Shield, label: "Privacy & Security", desc: "Password and Firebase Auth security settings" },
                       { icon: MapPinned, label: "Saved Locations", desc: "Manage your favorite destinations" },
                     ].map((item, i) => (
                       <button
